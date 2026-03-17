@@ -1,53 +1,84 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lost & Found Buddy</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Buddy</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-
 <body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-search-location"></i>
+            <h1>Lost & Found Buddy</h1>
+        </div>
+        <div id="user-menu" class="hidden">
+            <span id="user-email"></span>
+            <button id="logout-btn" class="btn btn-outline">ออกจากระบบ</button>
+        </div>
+    </nav>
 
-  <div class="container">
+    <main class="container">
+        <div id="auth-section" class="card auth-card">
+            <h2>เข้าสู่ระบบเพื่อเริ่มใช้งาน</h2>
+            <form id="auth-form">
+                <div class="input-group">
+                    <label>อีเมล</label>
+                    <input type="email" id="email" required placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>รหัสผ่าน</label>
+                    <input type="password" id="password" required placeholder="รหัสผ่าน 6 ตัวขึ้นไป">
+                </div>
+                <button type="submit" id="login-btn" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+                <button type="button" id="register-btn" class="btn btn-secondary w-100 mt-10">สมัครสมาชิกใหม่</button>
+            </form>
+            <p id="auth-error" class="error-text hidden"></p>
+        </div>
 
-    <h1>🔍 Lost & Found Buddy</h1>
+        <div id="app-section" class="hidden">
+            <div class="action-bar">
+                <h2>รายการของหาย / พบของ</h2>
+                <button id="show-add-modal-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> แจ้งรายการใหม่
+                </button>
+            </div>
+            
+            <div id="items-grid" class="grid-container">
+                </div>
+        </div>
+    </main>
 
-    <!-- Login Section -->
-    <div id="auth-section">
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-
-      <button onclick="register()">สมัครสมาชิก</button>
-      <button onclick="login()">เข้าสู่ระบบ</button>
+    <div id="add-modal" class="modal hidden">
+        <div class="modal-content card">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2>แจ้งรายการใหม่</h2>
+            <form id="add-item-form">
+                <div class="input-group">
+                    <label>ประเภท</label>
+                    <select id="item-type" required>
+                        <option value="lost">ของหาย (Lost)</option>
+                        <option value="found">พบของ (Found)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>ชื่อสิ่งของ</label>
+                    <input type="text" id="item-title" required placeholder="เช่น กระเป๋าสตางค์สีดำ">
+                </div>
+                <div class="input-group">
+                    <label>รายละเอียด / สถานที่</label>
+                    <textarea id="item-desc" rows="3" required placeholder="พบที่ไหน หรือหายที่ไหน มีจุดสังเกตอะไรบ้าง"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>เบอร์ติดต่อ (หรือช่องทางติดต่อ)</label>
+                    <input type="text" id="item-contact" required placeholder="เบอร์โทรหรือ Line ID">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">บันทึกข้อมูล</button>
+            </form>
+        </div>
     </div>
 
-    <!-- App Section -->
-    <div id="app-section" class="hidden">
-      <h2>โพสต์ของหาย / ของที่พบ</h2>
-
-      <input type="text" id="title" placeholder="ชื่อสิ่งของ">
-      <input type="text" id="detail" placeholder="รายละเอียด">
-      <select id="type">
-        <option value="lost">ของหาย</option>
-        <option value="found">ของที่พบ</option>
-      </select>
-
-      <button onclick="addPost()">➕ เพิ่มโพสต์</button>
-      <button onclick="logout()">🚪 ออกจากระบบ</button>
-
-      <h3>📋 รายการทั้งหมด</h3>
-      <div id="post-list"></div>
-    </div>
-
-  </div>
-
-  <script src="script.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
