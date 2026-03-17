@@ -1,11 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { getFirestore, collection, addDoc, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// CONFIG
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDvVw8GBvSRczBFzuTtikUZJU6W17WtB3w",
   authDomain: "lostfoundbuddy.firebaseapp.com",
@@ -16,54 +9,87 @@ const firebaseConfig = {
   measurementId: "G-E8SN2LMRC0"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// Init Firebase
+firebase.initializeApp(firebaseConfig);
 
-// AUTH
-window.register = async () => {
-  const email = emailInput.value;
-  const password = passwordInput.value;
-  await createUserWithEmailAndPassword(auth, email, password);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+
+const loginSection = document.getElementById("login-section");
+const userSection = document.getElementById("user-section");
+const postSection = document.getElementById("post-section");
+
+const postBtn = document.getElementById("postBtn");
+const postsDiv = document.getElementById("posts");
+
+// Login
+loginBtn.onclick = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
 };
 
-window.login = async () => {
-  await signInWithEmailAndPassword(auth, email.value, password.value);
+// Logout
+logoutBtn.onclick = () => {
+  auth.signOut();
 };
 
-window.logout = () => signOut(auth);
+// Auth State
+auth.onAuthStateChanged(user => {
+  if (user) {
+    userName.innerText = "👤 " + user.displayName;
 
-// STATE
-onAuthStateChanged(auth, (user) => {
-  document.getElementById("auth").style.display = user ? "none" : "block";
-  document.getElementById("dashboard").style.display = user ? "block" : "none";
-  if (user) loadItems();
+    loginSection.classList.add("hidden");
+    userSection.classList.remove("hidden");
+    postSection.classList.remove("hidden");
+
+    loadPosts();
+  } else {
+    loginSection.classList.remove("hidden");
+    userSection.classList.add("hidden");
+    postSection.classList.add("hidden");
+  }
 });
 
-// ADD
-window.addItem = async () => {
-  await addDoc(collection(db, "items"), {
-    title: title.value,
-    desc: desc.value,
-    type: type.value
+// Add Post
+postBtn.onclick = async () => {
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const type = document.getElementById("type").value;
+
+  await db.collection("posts").add({
+    title,
+    description,
+    type,
+    createdAt: new Date()
   });
-  loadItems();
+
+  loadPosts();
 };
 
-// LOAD
-async function loadItems() {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+// Load Posts
+async function loadPosts() {
+  postsDiv.innerHTML = "";
 
-  const snap = await getDocs(collection(db, "items"));
-  snap.forEach(doc => {
-    const d = doc.data();
-    list.innerHTML += `
-      <div class="card">
-        <h3>${d.title}</h3>
-        <p>${d.desc}</p>
-        <span>${d.type}</span>
-      </div>
+  const snapshot = await db.collection("posts")
+    .orderBy("createdAt", "desc")
+    .get();
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    const div = document.createElement("div");
+    div.className = `post ${data.type}`;
+
+    div.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.description}</p>
+      <small>${data.type === "lost" ? "❌ ของหาย" : "✅ ของที่พบ"}</small>
     `;
+
+    postsDiv.appendChild(div);
   });
 }
