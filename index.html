@@ -4,41 +4,53 @@
   <meta charset="UTF-8">
   <title>Lost & Found Buddy</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase -->
   <script type="module" src="app.js"></script>
 </head>
 <body>
 
-  <div class="container">
-    <h1>🔍 Lost & Found Buddy</h1>
+<div class="app">
 
-    <!-- Login / Register -->
+  <!-- LEFT BRAND -->
+  <div class="left">
+    <h1>Lost & Found Buddy</h1>
+    <p>ระบบแจ้งของหายและของที่พบ<br>ใช้งานง่าย รวดเร็ว ปลอดภัย</p>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+
+    <!-- LOGIN -->
     <div id="auth">
+      <h2>เข้าสู่ระบบ</h2>
       <input type="email" id="email" placeholder="Email">
       <input type="password" id="password" placeholder="Password">
-      <button onclick="register()">สมัครสมาชิก</button>
       <button onclick="login()">เข้าสู่ระบบ</button>
+      <button class="secondary" onclick="register()">สมัครสมาชิก</button>
     </div>
 
-    <!-- App -->
-    <div id="app" style="display:none;">
-      <h2>เพิ่มรายการของหาย / ของที่พบ</h2>
+    <!-- APP -->
+    <div id="dashboard" style="display:none;">
+      <div class="topbar">
+        <h2>Dashboard</h2>
+        <button onclick="logout()">Logout</button>
+      </div>
 
-      <input type="text" id="title" placeholder="ชื่อสิ่งของ">
-      <input type="text" id="description" placeholder="รายละเอียด">
-      <select id="type">
-        <option value="lost">ของหาย</option>
-        <option value="found">ของที่พบ</option>
-      </select>
+      <div class="form">
+        <input type="text" id="title" placeholder="ชื่อสิ่งของ">
+        <input type="text" id="desc" placeholder="รายละเอียด">
+        <select id="type">
+          <option value="lost">ของหาย</option>
+          <option value="found">ของที่พบ</option>
+        </select>
+        <button onclick="addItem()">โพสต์</button>
+      </div>
 
-      <button onclick="addItem()">บันทึก</button>
-      <button onclick="logout()">ออกจากระบบ</button>
-
-      <h3>รายการทั้งหมด</h3>
-      <ul id="list"></ul>
+      <div id="list" class="cards"></div>
     </div>
+
   </div>
+
+</div>
 
 </body>
 </html>
