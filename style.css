@@ -1,131 +1,144 @@
-/* ===== Reset ===== */
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", "Prompt", sans-serif;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
-/* ===== Background ===== */
+/* ===== BODY ===== */
 body {
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
-  background-size: 200% 200%;
-  animation: gradientMove 10s ease infinite;
+  background: #f9fafb;
 }
 
-/* Gradient animation */
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* ===== Glass Card ===== */
+/* ===== MAIN LAYOUT ===== */
 .container {
-  width: 380px;
-  padding: 35px;
-
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  text-align: center;
+  width: 100%;
+  display: flex;
 }
 
-/* ===== Title ===== */
+/* ===== LEFT (Brand / Marketing) ===== */
+.container::before {
+  content: "";
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+/* ===== RIGHT (FORM AREA) ===== */
+#auth {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+  background: #ffffff;
+}
+
+/* ===== LOGO / TITLE ===== */
 h1 {
   font-size: 28px;
   font-weight: 600;
-  margin-bottom: 25px;
-
-  color: #ffffff;
-  letter-spacing: 1px;
+  margin-bottom: 10px;
+  color: #111827;
 }
 
-/* ===== Inputs ===== */
+/* subtitle */
+h1::after {
+  content: "เข้าสู่ระบบเพื่อใช้งานระบบ Lost & Found";
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* ===== INPUT ===== */
 input {
   width: 100%;
   padding: 14px;
-  margin: 10px 0;
-
-  border-radius: 10px;
-  border: none;
-
-  background: rgba(255,255,255,0.2);
-  color: white;
-
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-/* Placeholder */
-input::placeholder {
-  color: rgba(255,255,255,0.7);
-}
-
-/* Focus */
-input:focus {
-  outline: none;
-  background: rgba(255,255,255,0.3);
-  box-shadow: 0 0 10px rgba(255,255,255,0.3);
-}
-
-/* ===== Buttons ===== */
-button {
-  width: 48%;
-  padding: 12px;
   margin-top: 15px;
 
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+/* focus */
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* ===== PRIMARY BUTTON ===== */
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+
+  border-radius: 8px;
   border: none;
-  border-radius: 10px;
 
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-
+  font-size: 15px;
   font-weight: 500;
+
   cursor: pointer;
-
-  transition: all 0.3s ease;
+  transition: 0.25s;
 }
 
-/* Hover effect */
-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+/* login */
+button:nth-child(4) {
+  background: #2563eb;
+  color: white;
 }
 
-/* Active click */
-button:active {
-  transform: scale(0.96);
+button:nth-child(4):hover {
+  background: #1e40af;
 }
 
-/* ===== Layout ปุ่ม ===== */
-#auth {
-  display: flex;
-  justify-content: space-between;
+/* register */
+button:nth-child(3) {
+  background: transparent;
+  color: #2563eb;
+  border: 1px solid #2563eb;
 }
 
-/* ===== Mobile ===== */
-@media (max-width: 420px) {
-  .container {
-    width: 90%;
-    padding: 25px;
-  }
+button:nth-child(3):hover {
+  background: #eff6ff;
+}
 
-  button {
-    width: 100%;
-    margin-top: 10px;
+/* ===== DIVIDER ===== */
+#auth::after {
+  content: "หรือ";
+  text-align: center;
+  margin-top: 20px;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* ===== FOOTER TEXT ===== */
+#auth::before {
+  content: "Secure system • Trusted by users";
+  position: absolute;
+  bottom: 30px;
+  right: 80px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .container::before {
+    display: none;
   }
 
   #auth {
-    flex-direction: column;
+    width: 100%;
+    padding: 40px;
   }
 }
