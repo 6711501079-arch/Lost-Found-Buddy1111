@@ -1,91 +1,131 @@
-/* Reset */
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", "Prompt", sans-serif;
 }
 
-/* Background */
+/* ===== Background ===== */
 body {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* gradient สุภาพ */
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+  background-size: 200% 200%;
+  animation: gradientMove 10s ease infinite;
 }
 
-/* Card */
+/* Gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== Glass Card ===== */
 .container {
-  width: 350px;
-  padding: 30px;
-  border-radius: 16px;
+  width: 380px;
+  padding: 35px;
 
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   text-align: center;
 }
 
-/* Title */
+/* ===== Title ===== */
 h1 {
+  font-size: 28px;
+  font-weight: 600;
   margin-bottom: 25px;
-  color: #1e3c72;
-  font-size: 26px;
+
+  color: #ffffff;
+  letter-spacing: 1px;
 }
 
-/* Input */
+/* ===== Inputs ===== */
 input {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin: 10px 0;
 
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 10px;
+  border: none;
 
-  transition: 0.3s;
+  background: rgba(255,255,255,0.2);
+  color: white;
+
+  font-size: 14px;
+  transition: all 0.3s ease;
 }
 
-/* Focus effect */
+/* Placeholder */
+input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Focus */
 input:focus {
-  border-color: #2a5298;
   outline: none;
-  box-shadow: 0 0 5px rgba(42,82,152,0.3);
+  background: rgba(255,255,255,0.3);
+  box-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 button {
   width: 48%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 15px;
 
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
 
-  background: linear-gradient(135deg, #2a5298, #1e3c72);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
 
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.3s;
+
+  transition: all 0.3s ease;
 }
 
-/* Hover */
+/* Hover effect */
 button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-/* Button container */
-#auth button {
-  display: inline-block;
+/* Active click */
+button:active {
+  transform: scale(0.96);
 }
 
-/* Responsive */
-@media (max-width: 400px) {
+/* ===== Layout ปุ่ม ===== */
+#auth {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 420px) {
   .container {
     width: 90%;
+    padding: 25px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  #auth {
+    flex-direction: column;
   }
 }
