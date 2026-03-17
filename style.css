@@ -1,106 +1,73 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
-}
-
 body {
-  height: 100vh;
-  background: #f1f5f9;
+  font-family: 'Prompt', sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  margin: 0;
+  color: #333;
 }
 
-.app {
-  display: flex;
-  height: 100vh;
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
 }
 
-/* LEFT */
-.left {
-  width: 40%;
-  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+h1 {
+  text-align: center;
   color: white;
-  padding: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
-.left h1 {
-  font-size: 32px;
+h2 {
+  margin-top: 20px;
 }
 
-.left p {
-  margin-top: 15px;
-  opacity: 0.8;
-}
-
-/* RIGHT */
-.right {
-  width: 60%;
-  background: white;
-  padding: 60px;
-}
-
-/* LOGIN */
-#auth {
-  max-width: 350px;
-}
-
-#auth h2 {
-  margin-bottom: 20px;
-}
-
-input, select {
+input, textarea, select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
 }
 
 button {
   width: 100%;
   padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #2563eb;
-  color: white;
   margin-top: 10px;
+  border: none;
+  border-radius: 12px;
+  background: #ff7a18;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-button.secondary {
-  background: #e5e7eb;
-  color: #111;
+button:hover {
+  background: #ff5200;
+  transform: scale(1.05);
 }
 
-/* DASHBOARD */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.hidden {
+  display: none;
 }
 
-.form {
-  margin-bottom: 20px;
-}
-
-/* CARD */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-  gap: 15px;
-}
-
-.card {
+#list {
+  background: white;
   padding: 15px;
-  border-radius: 10px;
-  background: #f9fafb;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border-radius: 15px;
+  margin-top: 20px;
 }
 
-.card span {
-  font-size: 12px;
-  color: #6b7280;
+.post {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.lost {
+  border-left: 5px solid red;
+}
+
+.found {
+  border-left: 5px solid green;
 }
