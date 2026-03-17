@@ -1,97 +1,134 @@
-// Firebase Config
+// นำเข้า Firebase modules ผ่าน CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// ตั้งค่า Firebase ตามที่คุณให้มา
 const firebaseConfig = {
-  apiKey: "AIzaSyDvVw8GBvSRczBFzuTtikUZJU6W17WtB3w",
-  authDomain: "lostfoundbuddy.firebaseapp.com",
-  projectId: "lostfoundbuddy",
-  storageBucket: "lostfoundbuddy.firebasestorage.app",
-  messagingSenderId: "561772215230",
-  appId: "1:561772215230:web:dea84f8ad5f0366ab117ef",
-  measurementId: "G-E8SN2LMRC0"
+    apiKey: "AIzaSyB-cO6DfqpDbKrr7ZEYfT2VOvxUWzyZYKg",
+    authDomain: "lost-b7c3c.firebaseapp.com",
+    projectId: "lost-b7c3c",
+    storageBucket: "lost-b7c3c.firebasestorage.app",
+    messagingSenderId: "1093239801094",
+    appId: "1:1093239801094:web:d5477c661ed439bd294a87",
+    measurementId: "G-PLZ4BTQ7PQ"
 };
 
-// Init Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// เริ่มต้นใช้งาน Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Register
-function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// ผูกตัวแปรกับ HTML Elements
+const authSection = document.getElementById('auth-section');
+const appSection = document.getElementById('app-section');
+const userMenu = document.getElementById('user-menu');
+const userEmailDisplay = document.getElementById('user-email');
+const authError = document.getElementById('auth-error');
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => alert("สมัครสมาชิกสำเร็จ"))
-    .catch(err => alert(err.message));
-}
-
-// Login
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => alert("เข้าสู่ระบบสำเร็จ"))
-    .catch(err => alert(err.message));
-}
-
-// Logout
-function logout() {
-  auth.signOut();
-}
-
-// Auth State
-auth.onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById("auth-section").classList.add("hidden");
-    document.getElementById("app-section").classList.remove("hidden");
-    loadPosts();
-  } else {
-    document.getElementById("auth-section").classList.remove("hidden");
-    document.getElementById("app-section").classList.add("hidden");
-  }
+// ระบบ Authentication
+document.getElementById('login-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    signInWithEmailAndPassword(auth, email, password)
+        .catch(error => showAuthError("ล็อกอินล้มเหลว: ตรวจสอบอีเมลหรือรหัสผ่าน"));
 });
 
-// Add Post
-function addPost() {
-  const title = document.getElementById("title").value;
-  const detail = document.getElementById("detail").value;
-  const type = document.getElementById("type").value;
+document.getElementById('register-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    createUserWithEmailAndPassword(auth, email, password)
+        .catch(error => showAuthError("สมัครสมาชิกล้มเหลว: " + error.message));
+});
 
-  db.collection("posts").add({
-    title,
-    detail,
-    type,
-    createdAt: new Date()
-  })
-  .then(() => {
-    alert("เพิ่มโพสต์สำเร็จ");
-    loadPosts();
-  });
+document.getElementById('logout-btn').addEventListener('click', () => {
+    signOut(auth);
+});
+
+function showAuthError(msg) {
+    authError.textContent = msg;
+    authError.classList.remove('hidden');
 }
 
-// Load Posts
-function loadPosts() {
-  const postList = document.getElementById("post-list");
-  postList.innerHTML = "";
+// ตรวจสอบสถานะการล็อกอิน
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // ล็อกอินสำเร็จ
+        authSection.classList.add('hidden');
+        appSection.classList.remove('hidden');
+        userMenu.classList.remove('hidden');
+        userEmailDisplay.textContent = user.email;
+        loadItems(); // โหลดข้อมูลเมื่อล็อกอิน
+    } else {
+        // ยังไม่ได้ล็อกอิน
+        authSection.classList.remove('hidden');
+        appSection.classList.add('hidden');
+        userMenu.classList.add('hidden');
+        document.getElementById('auth-form').reset();
+        authError.classList.add('hidden');
+    }
+});
 
-  db.collection("posts")
-    .orderBy("createdAt", "desc")
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        const data = doc.data();
+// ระบบ Modal แจ้งรายการใหม่
+const modal = document.getElementById('add-modal');
+document.getElementById('show-add-modal-btn').addEventListener('click', () => modal.classList.remove('hidden'));
+document.getElementById('close-modal').addEventListener('click', () => modal.classList.add('hidden'));
 
-        const div = document.createElement("div");
-        div.classList.add("post");
-        div.classList.add(data.type);
+// บันทึกข้อมูลลง Firestore Database
+document.getElementById('add-item-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const type = document.getElementById('item-type').value;
+    const title = document.getElementById('item-title').value;
+    const desc = document.getElementById('item-desc').value;
+    const contact = document.getElementById('item-contact').value;
 
-        div.innerHTML = `
-          <strong>${data.title}</strong><br>
-          ${data.detail}<br>
-          <small>${data.type === "lost" ? "🔴 ของหาย" : "🟢 ของที่พบ"}</small>
-        `;
+    try {
+        await addDoc(collection(db, "items"), {
+            type: type,
+            title: title,
+            description: desc,
+            contact: contact,
+            reporterEmail: auth.currentUser.email,
+            createdAt: serverTimestamp()
+        });
+        
+        modal.classList.add('hidden');
+        document.getElementById('add-item-form').reset();
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+    }
+});
 
-        postList.appendChild(div);
-      });
+// โหลดข้อมูลจาก Firestore มาแสดงผลแบบ Real-time
+function loadItems() {
+    const q = query(collection(db, "items"), orderBy("createdAt", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+        const grid = document.getElementById('items-grid');
+        grid.innerHTML = ''; // เคลียร์ของเก่าก่อนแสดงใหม่
+        
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const itemElement = document.createElement('div');
+            itemElement.className = `item-card ${data.type}`;
+            
+            const badgeText = data.type === 'lost' ? 'ตามหาของ (Lost)' : 'พบเจอของ (Found)';
+            
+            itemElement.innerHTML = `
+                <span class="badge ${data.type}">${badgeText}</span>
+                <h3 class="item-title">${data.title}</h3>
+                <p class="item-desc">${data.description}</p>
+                <div class="item-contact">
+                    <i class="fas fa-phone-alt"></i> ติดต่อ: ${data.contact}
+                </div>
+            `;
+            grid.appendChild(itemElement);
+        });
     });
 }
