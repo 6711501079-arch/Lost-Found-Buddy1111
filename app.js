@@ -11,85 +11,87 @@ const firebaseConfig = {
 
 // Init Firebase
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const userName = document.getElementById("userName");
+// Register
+function register() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-const loginSection = document.getElementById("login-section");
-const userSection = document.getElementById("user-section");
-const postSection = document.getElementById("post-section");
-
-const postBtn = document.getElementById("postBtn");
-const postsDiv = document.getElementById("posts");
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => alert("สมัครสมาชิกสำเร็จ"))
+    .catch(err => alert(err.message));
+}
 
 // Login
-loginBtn.onclick = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-};
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => alert("เข้าสู่ระบบสำเร็จ"))
+    .catch(err => alert(err.message));
+}
 
 // Logout
-logoutBtn.onclick = () => {
+function logout() {
   auth.signOut();
-};
+}
 
 // Auth State
 auth.onAuthStateChanged(user => {
   if (user) {
-    userName.innerText = "👤 " + user.displayName;
-
-    loginSection.classList.add("hidden");
-    userSection.classList.remove("hidden");
-    postSection.classList.remove("hidden");
-
+    document.getElementById("auth-section").classList.add("hidden");
+    document.getElementById("app-section").classList.remove("hidden");
     loadPosts();
   } else {
-    loginSection.classList.remove("hidden");
-    userSection.classList.add("hidden");
-    postSection.classList.add("hidden");
+    document.getElementById("auth-section").classList.remove("hidden");
+    document.getElementById("app-section").classList.add("hidden");
   }
 });
 
 // Add Post
-postBtn.onclick = async () => {
+function addPost() {
   const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
+  const detail = document.getElementById("detail").value;
   const type = document.getElementById("type").value;
 
-  await db.collection("posts").add({
+  db.collection("posts").add({
     title,
-    description,
+    detail,
     type,
     createdAt: new Date()
+  })
+  .then(() => {
+    alert("เพิ่มโพสต์สำเร็จ");
+    loadPosts();
   });
-
-  loadPosts();
-};
+}
 
 // Load Posts
-async function loadPosts() {
-  postsDiv.innerHTML = "";
+function loadPosts() {
+  const postList = document.getElementById("post-list");
+  postList.innerHTML = "";
 
-  const snapshot = await db.collection("posts")
+  db.collection("posts")
     .orderBy("createdAt", "desc")
-    .get();
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
+        const div = document.createElement("div");
+        div.classList.add("post");
+        div.classList.add(data.type);
 
-    const div = document.createElement("div");
-    div.className = `post ${data.type}`;
+        div.innerHTML = `
+          <strong>${data.title}</strong><br>
+          ${data.detail}<br>
+          <small>${data.type === "lost" ? "🔴 ของหาย" : "🟢 ของที่พบ"}</small>
+        `;
 
-    div.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.description}</p>
-      <small>${data.type === "lost" ? "❌ ของหาย" : "✅ ของที่พบ"}</small>
-    `;
-
-    postsDiv.appendChild(div);
-  });
+        postList.appendChild(div);
+      });
+    });
 }
