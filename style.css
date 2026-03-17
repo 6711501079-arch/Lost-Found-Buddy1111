@@ -1,48 +1,46 @@
 body {
-  font-family: 'Prompt', sans-serif;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
   margin: 0;
-  color: #333;
+  padding: 0;
 }
 
 .container {
   max-width: 500px;
-  margin: auto;
-  padding: 20px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
-  color: white;
+  color: #333;
 }
 
-h2 {
-  margin-top: 20px;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+input, select {
+  width: 90%;
+  padding: 12px;
+  margin: 10px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #ddd;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+  padding: 12px 18px;
+  margin: 8px;
   border: none;
-  border-radius: 12px;
-  background: #ff7a18;
+  border-radius: 10px;
+  background: #4facfe;
   color: white;
-  font-weight: bold;
   cursor: pointer;
+  font-size: 14px;
   transition: 0.3s;
 }
 
 button:hover {
-  background: #ff5200;
+  background: #007bff;
   transform: scale(1.05);
 }
 
@@ -50,18 +48,12 @@ button:hover {
   display: none;
 }
 
-#list {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  margin-top: 20px;
-}
-
 .post {
   background: #f1f1f1;
   padding: 10px;
+  margin: 10px 0;
   border-radius: 10px;
-  margin-top: 10px;
+  text-align: left;
 }
 
 .lost {
