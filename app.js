@@ -5,7 +5,7 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 🔥 Firebase Config (ของคุณ)
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDvVw8GBvSRczBFzuTtikUZJU6W17WtB3w",
   authDomain: "lostfoundbuddy.firebaseapp.com",
@@ -16,84 +16,54 @@ const firebaseConfig = {
   measurementId: "G-E8SN2LMRC0"
 };
 
-// init
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// =====================
 // AUTH
-// =====================
-window.register = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    alert("สมัครสมาชิกสำเร็จ");
-  } catch (err) {
-    alert(err.message);
-  }
+window.register = async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  await createUserWithEmailAndPassword(auth, email, password);
 };
 
-window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    alert("เข้าสู่ระบบสำเร็จ");
-  } catch (err) {
-    alert(err.message);
-  }
+window.login = async () => {
+  await signInWithEmailAndPassword(auth, email.value, password.value);
 };
 
-window.logout = async function () {
-  await signOut(auth);
-};
+window.logout = () => signOut(auth);
 
-// =====================
-// ตรวจสอบสถานะ login
-// =====================
+// STATE
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    loadItems();
-  } else {
-    document.getElementById("auth").style.display = "block";
-    document.getElementById("app").style.display = "none";
-  }
+  document.getElementById("auth").style.display = user ? "none" : "block";
+  document.getElementById("dashboard").style.display = user ? "block" : "none";
+  if (user) loadItems();
 });
 
-// =====================
-// Firestore
-// =====================
-window.addItem = async function () {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const type = document.getElementById("type").value;
-
+// ADD
+window.addItem = async () => {
   await addDoc(collection(db, "items"), {
-    title,
-    description,
-    type,
-    createdAt: new Date()
+    title: title.value,
+    desc: desc.value,
+    type: type.value
   });
-
-  alert("บันทึกเรียบร้อย");
   loadItems();
 };
 
+// LOAD
 async function loadItems() {
-  const querySnapshot = await getDocs(collection(db, "items"));
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    const li = document.createElement("li");
-    li.textContent = `${data.title} - ${data.type}`;
-    list.appendChild(li);
+  const snap = await getDocs(collection(db, "items"));
+  snap.forEach(doc => {
+    const d = doc.data();
+    list.innerHTML += `
+      <div class="card">
+        <h3>${d.title}</h3>
+        <p>${d.desc}</p>
+        <span>${d.type}</span>
+      </div>
+    `;
   });
 }
