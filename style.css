@@ -1,196 +1,197 @@
 :root {
-    --primary-color: #0e0778; [cite: 1]
-    --primary-hover: #160b9c;
-    --secondary-color: #C6CFFF; [cite: 1]
-    --secondary-text: #0e0778; [cite: 1]
-    --bg-color: #F3F4F6; [cite: 1]
-    --card-bg: #FFFFFF; [cite: 1]
-    --text-main: #1F2937; [cite: 1]
-    --text-muted: #6B7280; [cite: 2]
-    --danger: #EF4444; [cite: 2]
-    --lost-color: #F59E0B; /* สีส้มสำหรับของหาย */ [cite: 2]
-    --found-color: #10B981; /* สีเขียวสำหรับพบของ */ [cite: 2, 3]
-    --border-color: #D1D5DB;
+    --primary-color: #0e0778;
+    --primary-hover: #0e0778;
+    --secondary-color: #C6CFFF;
+    --secondary-text: #0e0778;
+    --bg-color: #F3F4F6;
+    --card-bg: #FFFFFF;
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --danger: #EF4444;
+    --lost-color: #F59E0B; /* สีส้มสำหรับของหาย */
+    --found-color: #10B981; /* สีเขียวสำหรับพบของ */
 }
 
 * {
-    margin: 0; [cite: 3]
-    padding: 0; [cite: 3]
-    box-sizing: border-box; [cite: 3]
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; [cite: 3]
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: var(--bg-color); [cite: 4]
-    color: var(--text-main); [cite: 4]
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* สามารถเพิ่ม Background Pattern ลายเส้นๆ ตามในรูปได้ที่นี่ */
+    background-color: var(--bg-color);
+    color: var(--text-main);
 }
 
-/* ---------------- Navbar / Header ---------------- */
+/* Navbar */
 .navbar {
-    background-color: var(--secondary-color); /* ใช้สีฟ้าอ่อนตามรูป */
-    padding: 1rem 5%; [cite: 5]
-    display: flex; [cite: 5]
-    align-items: center; [cite: 5]
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); [cite: 5, 6]
-    color: var(--primary-color);
-    font-weight: bold;
-    font-size: 1.2rem;
+    background-color: var(--card-bg);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .logo {
-    display: flex; [cite: 6]
-    align-items: center; [cite: 6]
-    gap: 10px; [cite: 6]
-    color: var(--primary-color); [cite: 6, 7]
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
 }
 
-/* ---------------- Layout & Container ---------------- */
-.login-wrapper {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Utilities */
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.hidden { display: none !important; }
+.w-100 { width: 100%; }
+.mt-10 { margin-top: 10px; }
+.error-text { color: var(--danger); font-size: 0.9rem; margin-top: 10px; text-align: center; }
+
+/* Cards & Forms */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
     padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .auth-card {
-    background-color: var(--card-bg); [cite: 9]
-    border-radius: 12px; [cite: 9]
-    padding: 2.5rem 2rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 400px; [cite: 10]
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ---------------- Logo & Title in Card ---------------- */
-.auth-logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.auth-logo-img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 0.5rem;
-}
-
-.auth-brand-name {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .auth-card h2 {
-    text-align: center; [cite: 10]
-    margin-bottom: 1.5rem; [cite: 10, 11]
-    font-size: 1.3rem;
-    color: var(--text-main);
-}
-
-/* ---------------- Form Inputs ---------------- */
-.auth-form {
-    width: 100%;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
 .input-group {
-    margin-bottom: 1rem; [cite: 11]
-    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .input-group label {
-    display: block; [cite: 11]
-    margin-bottom: 0.5rem; [cite: 11]
-    font-weight: 500; [cite: 11]
-    color: var(--text-main); [cite: 12]
-    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-main);
 }
 
-.input-group input {
-    width: 100%; [cite: 12]
-    padding: 0.75rem 1rem; [cite: 12]
-    border: 1px solid var(--border-color); [cite: 12]
-    border-radius: 8px; [cite: 13]
-    font-size: 0.95rem; [cite: 13]
-    transition: border-color 0.3s; [cite: 13]
-}
-
-.input-group input:focus {
-    outline: none; [cite: 13]
-    border-color: var(--primary-color); [cite: 13]
-    box-shadow: 0 0 0 3px rgba(14, 7, 120, 0.1); /* ปรับสีเงาให้เข้ากับ primary color */
-}
-
-/* ---------------- Buttons ---------------- */
-.btn {
+.input-group input, .input-group textarea, .input-group select {
     width: 100%;
-    padding: 0.75rem 1.5rem; [cite: 14]
-    border: none; 
-    border-radius: 25px; /* ปรับให้ขอบมนขึ้นเหมือนในรูป */
-    font-size: 1rem; 
-    font-weight: 600; 
-    cursor: pointer; 
-    transition: all 0.2s; 
-    margin-bottom: 0.8rem;
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .btn-primary {
-    background-color: var(--primary-color); 
-    color: white; [cite: 16]
+    background-color: var(--primary-color);
+    color: white;
 }
 
-.btn-primary:hover { 
-    background-color: var(--primary-hover); [cite: 16]
-    transform: translateY(-1px); [cite: 16]
-}
+.btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
 
 .btn-secondary {
-    background-color: var(--secondary-color); [cite: 16]
-    color: var(--secondary-text); [cite: 16]
-    margin-bottom: 0;
+    background-color: var(--secondary-color);
+    color: var(--secondary-text);
 }
 
-.btn-secondary:hover { 
-    background-color: #B4BFF5; 
+.btn-secondary:hover { background-color: #C7D2FE; }
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
-/* ---------------- Footer Stats ---------------- */
-.auth-footer {
-    width: 100%;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #E5E7EB;
+/* App Section */
+.action-bar {
     display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.stat-item {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    font-weight: 500;
+    margin-bottom: 2rem;
 }
 
-.stat-icon {
-    margin-right: 10px;
-    font-size: 1.1rem;
+/* Grid for Items */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
-.stat-icon.lost { color: var(--lost-color); }
-.stat-icon.found { color: var(--found-color); }
+.item-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 5px solid gray;
+}
 
-/* Utilities คงไว้ตามเดิม */
-.hidden { display: none !important; } [cite: 7, 8]
-.w-100 { width: 100%; } [cite: 8]
-.error-text { color: var(--danger); font-size: 0.9rem; margin-top: 10px; text-align: center; } [cite: 8, 9]
+.item-card.lost { border-left-color: var(--lost-color); }
+.item-card.found { border-left-color: var(--found-color); }
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.badge.lost { background-color: var(--lost-color); }
+.badge.found { background-color: var(--found-color); }
+
+.item-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
+.item-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+.item-contact { font-weight: 500; font-size: 0.9rem; background: var(--bg-color); padding: 0.5rem; border-radius: 6px;}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
