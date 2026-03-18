@@ -35,7 +35,7 @@ body::before {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    opacity: 0.1; /* ปรับความจางที่นี่ [cite: 5] */
+    opacity: 5; /* ปรับความจางที่นี่ [cite: 5] */
     z-index: -1;
 }
 /* Navbar */
