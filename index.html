@@ -3,57 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lost & Found Buddy - Login</title>
+    <title>Lost & Found Buddy</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
     <nav class="navbar">
         <div class="logo">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Lost & Found Buddy</span>
+            <i class="fas fa-search-location"></i>
+            <h1>Lost & Found Buddy</h1>
+        </div>
+        <div id="user-menu" class="hidden">
+            <span id="user-email"></span>
+            <button id="logout-btn" class="btn btn-outline">ออกจากระบบ</button>
         </div>
     </nav>
 
-    <div class="login-wrapper">
-        <div class="auth-card">
-            
-            <div class="auth-logo-container">
-                <img src="logo-placeholder.png" alt="L & F BUDDY Logo" class="auth-logo-img">
-                <span class="auth-brand-name">L & F BUDDY</span>
-            </div>
-
+    <main class="container">
+        <div id="auth-section" class="card auth-card">
+            <img src="IMG_9594.jpg" alt="App Logo" style="width: 120px; margin: 0 auto 20px auto; display: block; border-radius: 12px;">
             <h2>เข้าสู่ระบบเพื่อเริ่มใช้งาน</h2>
-
-            <form class="auth-form" action="#" method="POST">
+            <form id="auth-form">
                 <div class="input-group">
-                    <label for="email">อีเมล</label>
-                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    <label>อีเมล</label>
+                    <input type="email" id="email" required placeholder="your@email.com">
                 </div>
-                
                 <div class="input-group">
-                    <label for="password">รหัสผ่าน</label>
-                    <input type="password" id="password" name="password" placeholder="รหัสผ่าน 6 ตัวขึ้นไป" required minlength="6">
+                    <label>รหัสผ่าน</label>
+                    <input type="password" id="password" required placeholder="รหัสผ่าน 6 ตัวขึ้นไป">
                 </div>
-
-                <button type="submit" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
-                <button type="button" class="btn btn-secondary w-100 mt-10">สร้างบัญชีใหม่</button>
+                <button type="submit" id="login-btn" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+                <button type="button" id="register-btn" class="btn btn-secondary w-100 mt-10">สมัครสมาชิกใหม่</button>
             </form>
+            <p id="auth-error" class="error-text hidden"></p>
+        </div>
 
-            <div class="auth-footer">
-                <div class="stat-item">
-                    <span class="stat-icon lost"><i class="fa-solid fa-box-archive"></i></span>
-                    <span>ประกาศของหาย (15)</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-icon found"><i class="fa-solid fa-square-check"></i></span>
-                    <span>ประกาศพบของ (8)</span>
-                </div>
+        <div id="app-section" class="hidden">
+            <div class="action-bar">
+                <h2>รายการของหาย / พบของ</h2>
+                <button id="show-add-modal-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> แจ้งรายการใหม่
+                </button>
             </div>
+            
+            <div id="items-grid" class="grid-container">
+                </div>
+        </div>
+    </main>
 
+    <div id="add-modal" class="modal hidden">
+        <div class="modal-content card">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2>แจ้งรายการใหม่</h2>
+            <form id="add-item-form">
+                <div class="input-group">
+                    <label>ประเภท</label>
+                    <select id="item-type" required>
+                        <option value="lost">ของหาย (Lost)</option>
+                        <option value="found">พบของ (Found)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>ชื่อสิ่งของ</label>
+                    <input type="text" id="item-title" required placeholder="เช่น กระเป๋าสตางค์สีดำ">
+                </div>
+                <div class="input-group">
+                    <label>รายละเอียด / สถานที่</label>
+                    <textarea id="item-desc" rows="3" required placeholder="พบที่ไหน หรือหายที่ไหน มีจุดสังเกตอะไรบ้าง"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>เบอร์ติดต่อ (หรือช่องทางติดต่อ)</label>
+                    <input type="text" id="item-contact" required placeholder="เบอร์โทรหรือ Line ID">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">บันทึกข้อมูล</button>
+            </form>
         </div>
     </div>
 
+    <script type="module" src="app.js"></script>
 </body>
 </html>
